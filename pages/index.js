@@ -1,8 +1,56 @@
+import { gql } from '@urql/core'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useQuery } from 'urql'
 import styles from '../styles/Home.module.css'
+import { client } from './_app'
 
-export default function Home() {
+const GET_CHAPTER_COMMENTARY_CONTENT = gql`
+  query chapterCommentaryContent(
+    $commentaryId: ID!
+    $bookNum: Float!
+    $chapterNum: Float!
+  ) {
+    bibleCommentaryContents(
+      where: {
+        commentary_id: $commentaryId
+        book_num: $bookNum
+        chapter_num: $chapterNum
+        reference_id_null: true
+      }
+    ) {
+      id
+      content_md
+    }
+  }
+`
+
+export const getServerSideProps = async () => {
+  const { data } = await client
+    .query(GET_CHAPTER_COMMENTARY_CONTENT, {
+      bookNum: 19,
+      chapterNum: 3,
+      commentaryId: '1',
+    })
+    .toPromise()
+
+  return {
+    props: {
+      bibleCommentaryContents: data.bibleCommentaryContents,
+    },
+  }
+}
+
+export default function Home(props) {
+  const res = useQuery({
+    query: GET_CHAPTER_COMMENTARY_CONTENT,
+    variables: { bookNum: 19, chapterNum: 3, commentaryId: '1' },
+  })
+
+  console.log({
+    dataFront: res,
+    dataBack: props,
+  })
   return (
     <div className={styles.container}>
       <Head>
