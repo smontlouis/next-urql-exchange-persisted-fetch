@@ -5,26 +5,14 @@ In order to make it work, I copied the [hash.js file](https://github.com/Formida
 
 ```
 export const client = createClient({
-  url: `${process.env.BACKEND_URL}/graphql`,
-  preferGetMethod: true,
+  url: `https://admin-dev-mabible.onrender.com/graphql`,
   exchanges: [
     dedupExchange,
-    cacheExchange({
-      updates: {...},
-      optimistic: {...},
-    }),
     persistedFetchExchange({
       preferGetForPersistedQueries: true,
     }),
     fetchExchange,
   ],
-  fetchOptions: () => {
-    const token =
-      typeof window !== 'undefined' ? localStorage.getItem('jwt') : undefined
-    return {
-      headers: { authorization: token ? `Bearer ${token}` : '' },
-    }
-  },
 })
 ```
 
