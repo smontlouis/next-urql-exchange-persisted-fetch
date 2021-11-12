@@ -18,10 +18,9 @@ export const client = createClient({
 
 urql version & exchanges:
 
-urql: ^2.0.5
-urql/exchange-persisted-fetch: ^1.3.2
+- urql: ^2.0.5
+- urql/exchange-persisted-fetch: ^1.3.2
 
-1. 2.
 
 **Expected behavior**
 No error message
